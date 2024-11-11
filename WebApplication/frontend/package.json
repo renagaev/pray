@@ -1,0 +1,38 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "buefy": "^0.9.29",
+    "core-js": "^3.39.0",
+    "firebase": "^11.0.1",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^9.1.2",
+    "vue-router": "^3.2.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^8.0.0",
+    "cache-loader": "^4.1.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-vue": "^7.17.0",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "typescript": "~4.9.4",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "4.47.0",
+    "webpack-bundle-analyzer": "^4.3.0"
+  }
+}

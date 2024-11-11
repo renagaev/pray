@@ -1,0 +1,34 @@
+﻿@import "~bulma/sass/utilities/initial-variables";
+
+@import "~buefy/src/scss/utils/_all.scss";
+
+$primary: #ff8c21;
+$success: $primary;
+$sizes: 4rem, 3rem, 2rem, 1.5rem, 1.25rem, 1rem, 0.75rem;
+$carousel-arrow-top: -25px;
+$carousel-arrow-top: -25px;
+$carousel-arrow-icon-spaced: 100px;
+
+
+.button.is-success {
+  box-shadow: 0 5px 15px rgba($success, 0.6);
+}
+
+.card.highlighted {
+  box-shadow: 0 5px 20px 2px rgba($success, 0.8);
+}
+
+@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/components/card.sass";
+@import "~bulma/sass/grid/columns";
+@import "~bulma/sass/elements/button";
+@import "~bulma/sass/helpers/typography";
+@import "~bulma/sass/layout/_all.sass";
+@import "~bulma/sass/form/_all.sass";
+@import "~buefy/src/scss/utils/_all.scss";
+@import "~bulma/sass/elements/title";
+
+@import "~buefy/src/scss/components/switch";
+@import "~bulma/sass/elements/table";
+@import "~buefy/src/scss/components/table";
+@import "~bulma";

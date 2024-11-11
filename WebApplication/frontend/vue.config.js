@@ -1,5 +1,4 @@
-﻿const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-module.exports = {
+﻿module.exports = {
     configureWebpack: {
         devServer: {
             disableHostCheck: true
@@ -7,7 +6,7 @@ module.exports = {
         optimization: {
             usedExports: true,
         },
-        plugins: [new BundleAnalyzerPlugin()],
+        plugins: [],
         module:{
             rules:[
                 {

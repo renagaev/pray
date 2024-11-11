@@ -41,7 +41,7 @@ jobs:
             docker stop ${{ env.container_name }} || true && docker rm ${{ env.container_name }} || true
             docker run -d --name ${{ env.container_name }}  --env \
               ConnectionString="${{ secrets.DB }}" \
-              FirebaseSecret="${{ secretes.FIREBASE }}" \
+              FirebaseSecret="${{ secrets.FIREBASE }}" \
               Vk__Token="${{ secretes.VK_TOKEN }}" \
               AdminAuth__Login="${{ secrets.ADMIN_LOGIN }}"\
               AdminAuth__Password="${{ secrets.ADMIN_PASSWORD }}"\

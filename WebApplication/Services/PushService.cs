@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
@@ -15,7 +16,7 @@ namespace WebApplication.Services
         {
             var app = FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(configuration["FirebaseSecret"])
+                Credential = GoogleCredential.FromJson(Regex.Unescape(configuration["FirebaseSecret"]))
             });
             _messaging = FirebaseMessaging.GetMessaging(app);
         }

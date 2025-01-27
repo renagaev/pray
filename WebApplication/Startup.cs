@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Telegram.Bot;
 using WebApplication.Auth;
 using WebApplication.Services;
 
@@ -20,7 +21,9 @@ public class Startup(IConfiguration configuration)
                 options.Password = configuration["AdminAuth:Password"];
             });
         services.AddDbContext<AppDbContext>();
+        services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(configuration["Tg:Token"]));
         services.AddScoped<IPublishHandler, VkPublisher>();
+        services.AddScoped<IPublishHandler, TgPublisher>();
         services.AddScoped<VkPublisher>();
         services.AddScoped<PostService>();
         services.AddControllers();

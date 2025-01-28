@@ -44,7 +44,7 @@ jobs:
               --env ConnectionString="${{ secrets.DB }}" \
               --env FirebaseSecret="${{ secrets.FIREBASE }}" \
               --env Vk__Token="${{ secrets.VK_TOKEN }}" \
-              --env Tg_Token="${{ secrets.TG_TOKEN }}" \
+              --env Tg__Token="${{ secrets.TG_TOKEN }}" \
               --env AdminAuth__Login="${{ secrets.ADMIN_LOGIN }}"\
               --env AdminAuth__Password="${{ secrets.ADMIN_PASSWORD }}"\
               -p ${{ secrets.APP_PORT }}:80 ${{ env.image_tag }} 

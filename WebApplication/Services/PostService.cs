@@ -63,14 +63,15 @@ namespace WebApplication.Services
             var published = model.Published && !entity.Published;
 
             if (published) entity.Publish();
-            await context.SaveChangesAsync();
             if (published)
             {
                 foreach (var publishHandler in publishHandlers)
                 {
-                    await publishHandler.HandlePostPublish(entity.Author, entity.Text);
+                    await publishHandler.HandlePostPublish(entity);
                 }
             }
+            
+            await context.SaveChangesAsync();
         }
 
         public async Task<Post[]> GetForUsers()

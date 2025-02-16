@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using VkNet;
 using VkNet.Model;
+using Post = WebApplication.Entities.Post;
 
 namespace WebApplication.Services
 {
@@ -21,13 +22,13 @@ namespace WebApplication.Services
             });
         }
 
-        public async Task HandlePostPublish(string author, string text)
+        public async Task HandlePostPublish(Post post)
         {
             await Authorize();
-            var message = $"Новая нужда 🙏:\n{text}";
-            if (author?.Trim().Length > 2)
+            var message = $"Новая нужда 🙏:\n{post.Text}";
+            if (post.Author?.Trim().Length > 2)
             {
-                message += $"\n—{author}";
+                message += $"\n—{post.Author}";
             }
 
             _api.Messages.Send(new MessagesSendParams

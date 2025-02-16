@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using WebApplication.Auth;
 using WebApplication.Services;
+using WebApplication.Services.Tg;
 
 namespace WebApplication;
 
@@ -24,8 +25,11 @@ public class Startup(IConfiguration configuration)
         services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(configuration["Tg:Token"]));
         services.AddScoped<IPublishHandler, VkPublisher>();
         services.AddScoped<IPublishHandler, TgPublisher>();
+        services.AddScoped<TgReactionHandler>();
         services.AddScoped<VkPublisher>();
         services.AddScoped<PostService>();
+        services.AddHostedService<TelegramHostedService>();
+        services.AddSingleton<TgUpdateHandler>();
         services.AddControllers();
         services.AddSingleton<PushService>();
         services.AddScoped<IPublishHandler>(s => s.GetService<PushService>());

@@ -5,6 +5,7 @@ using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.Extensions.Configuration;
+using WebApplication.Entities;
 
 namespace WebApplication.Services
 {
@@ -59,11 +60,9 @@ namespace WebApplication.Services
                     }
                 }
             };
-
-
-        public async Task HandlePostPublish(string author, string text)
+        public async Task HandlePostPublish(Post post)
         {
-            var message = CreateMessage("Жертвенник | Новая нужда", text);
+            var message = CreateMessage("Жертвенник | Новая нужда", post.Text);
             message.Topic = "new_posts";
             await _messaging.SendAsync(message);
         }

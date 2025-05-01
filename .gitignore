@@ -14,3 +14,9 @@ msbuild.err
 msbuild.wrn
 
 wwwroot/
+node_modules/
+dist/
+.idea/
+.aider*
+secret.json
+appsettings.Development.json

@@ -3,7 +3,7 @@ import { Input, Textarea, Snackbar } from "@telegram-apps/telegram-ui";
 import { mainButton } from "@telegram-apps/sdk-react";
 import RequestsService from "@/services/RequestsService";
 
-type Status = "default" | "error" | "focused";
+type Status = "default" | "error" | "focused" | undefined;
 
 const RequestForm: React.FC = () => {
     const [author, setAuthor] = useState<string>("");
@@ -35,8 +35,8 @@ const RequestForm: React.FC = () => {
                 const isTextValid = textRef.current.trim() !== "";
                 const isAuthorValid = authorRef.current.trim() !== "";
 
-                setTextStatus(isTextValid ? "default" : "error");
-                setAuthorStatus(isAuthorValid ? "default" : "error");
+                setTextStatus(isTextValid ? undefined : "error");
+                setAuthorStatus(isAuthorValid ? undefined : "error");
 
                 if (!isTextValid || !isAuthorValid) {
                     return;
@@ -57,13 +57,13 @@ const RequestForm: React.FC = () => {
     const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setText(value);
-        setTextStatus(value.trim() !== "" ? "focused" : "error");
+        setTextStatus(value.trim() !== "" ? undefined : "error");
     };
 
     const handleAuthorChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setAuthor(value);
-        setAuthorStatus(value.trim() !== "" ? "focused" : "error");
+        setAuthorStatus(value.trim() !== "" ? undefined : "error");
     };
 
     return (

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.Controllers;
 
-[Route("posts/tg")]
-[Authorize(AuthenticationSchemes = "tma")]
+[Route("tg/posts")]
+[Authorize(AuthenticationSchemes = "twa")]
 public class TgPostController: ControllerBase
 {
-    [HttpPost("suggest")]
+    [HttpPost("submit")]
     public async Task<ActionResult> Suggest(string text, string author)
     {
         return Ok();

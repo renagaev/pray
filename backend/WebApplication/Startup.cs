@@ -21,7 +21,7 @@ public class Startup(IConfiguration configuration)
                 options.Login = configuration["AdminAuth:Login"];
                 options.Password = configuration["AdminAuth:Password"];
             })
-            .AddScheme<TgAuthOptions, TgAuthHandler>("tma", options =>
+            .AddScheme<TgAuthOptions, TgAuthHandler>("twa", options =>
             {
                 options.Token = configuration["Tg:Token"];
             });

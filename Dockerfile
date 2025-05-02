@@ -25,7 +25,7 @@ WORKDIR /app
 COPY tg_frontend/package.json .
 RUN npm install 
 
-COPY site_fronend . 
+COPY tg_frontend . 
 RUN npm run build 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 as final

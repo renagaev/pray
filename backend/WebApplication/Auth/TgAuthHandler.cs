@@ -42,7 +42,7 @@ public class TgAuthHandler(IOptionsMonitor<TgAuthOptions> options, ILoggerFactor
         }
 
         var principal = new ClaimsPrincipal(new ClaimsIdentity([], "Tokens"));
-        var ticket = new AuthenticationTicket(principal, this.Scheme.Name);
+        var ticket = new AuthenticationTicket(principal, Scheme.Name);
         return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 }

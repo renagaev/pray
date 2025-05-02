@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Telegram.Bot;
 using WebApplication.Entities;
+using WebApplication.Services.Tg;
 
 namespace WebApplication.Services
 {
@@ -16,24 +18,25 @@ namespace WebApplication.Services
     public class PostService(
         AppDbContext context,
         PushService pushService,
+        TgPostUpdateService tgPostUpdateService,
         IEnumerable<IPublishHandler> publishHandlers)
     {
         private readonly DbSet<Post> _set = context.Set<Post>();
 
-        public async Task IncrementVotes(int id, VoteType voteType)
+        public async Task IncrementVotes(int id, VoteType voteType, int count)
         {
             var post = await _set.FirstOrDefaultAsync(x => x.Id == id);
             if (post == null) return;
             switch (voteType)
             {
                 case VoteType.Standard:
-                    post.Votes++;
+                    post.Votes += count;
                     break;
                 case VoteType.SmallGroup:
-                    post.SmallGroupVotes++;
+                    post.SmallGroupVotes += count;
                     break;
                 case VoteType.LargeGroup:
-                    post.LargeGroupVotes++;
+                    post.LargeGroupVotes += count;
                     break;
             }
 
@@ -52,26 +55,33 @@ namespace WebApplication.Services
 
             _set.Add(post);
             await context.SaveChangesAsync();
+            await tgPostUpdateService.NotifyNewPost(text, author);
         }
 
         public async Task Update(int id, PostEditModel model)
         {
             var entity = await _set.FirstOrDefaultAsync(x => x.Id == id);
-            entity.Hidden = model.Hidden;
+
             entity.Author = model.Author;
             entity.Text = model.Text;
             var published = model.Published && !entity.Published;
+            var hidden = model.Hidden && entity.Published;
+            entity.Hidden = model.Hidden;
 
-            if (published) entity.Publish();
             if (published)
             {
+                entity.Publish();
                 foreach (var publishHandler in publishHandlers)
                 {
                     await publishHandler.HandlePostPublish(entity);
                 }
             }
-            
+
             await context.SaveChangesAsync();
+            if (hidden)
+            {
+                await tgPostUpdateService.MarkPostAsUnActual(entity.Id);
+            }
         }
 
         public async Task<Post[]> GetForUsers()

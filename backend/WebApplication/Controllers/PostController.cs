@@ -31,7 +31,7 @@ public class PostController(PostService service, PushService pushService) : Cont
     [HttpPost("vote")]
     public async Task<ActionResult> Increment(int id, VoteType voteType)
     {
-        await service.IncrementVotes(id, voteType);
+        await service.IncrementVotes(id, voteType, 1);
         return Ok();
     }
 

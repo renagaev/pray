@@ -7,4 +7,5 @@ public class TelegramPost
     public long ChatId { get; init; }
     public Post Post { get; init; }
     public int PostId { get; set; }
+    public int ReactionCount { get; set; }
 }

@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.InlineQueryResults;
+using Telegram.Bot.Types.ReplyMarkups;
 using WebApplication.Auth;
 using WebApplication.Services;
 using WebApplication.Services.Tg;
@@ -21,18 +24,13 @@ public class Startup(IConfiguration configuration)
                 options.Login = configuration["AdminAuth:Login"];
                 options.Password = configuration["AdminAuth:Password"];
             })
-            .AddScheme<TgAuthOptions, TgAuthHandler>("twa", options =>
-            {
-                options.Token = configuration["Tg:Token"];
-            });
-        
-        
+            .AddScheme<TgAuthOptions, TgAuthHandler>("twa", options => { options.Token = configuration["Tg:Token"]; });
+
         services.AddDbContext<AppDbContext>();
         services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(configuration["Tg:Token"]));
-        services.AddScoped<IPublishHandler, VkPublisher>();
+        services.AddScoped<TgPostUpdateService>();
         services.AddScoped<IPublishHandler, TgPublisher>();
         services.AddScoped<TgReactionHandler>();
-        services.AddScoped<VkPublisher>();
         services.AddScoped<PostService>();
         services.AddHostedService<TelegramHostedService>();
         services.AddSingleton<TgUpdateHandler>();

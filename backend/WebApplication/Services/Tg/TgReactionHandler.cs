@@ -10,41 +10,35 @@ namespace WebApplication.Services.Tg;
 public class TgReactionHandler(PostService postService, AppDbContext dbContext, IConfiguration configuration)
 {
     private readonly long _chatId = configuration.GetValue<long>("Tg:ChatId");
-    public async Task HandleReactionUpdate(MessageReactionUpdated reactionUpdated)
+    public async Task HandleReactionUpdate(MessageReactionCountUpdated reactionUpdated)
     {
-        if (reactionUpdated.Chat.Id != _chatId || reactionUpdated.User == null)
+        if (reactionUpdated.Chat.Id != _chatId)
         {
             return;
         }
 
-        if (reactionUpdated.NewReaction.OfType<ReactionTypeEmoji>().All(x => x.Emoji != "🙏"))
+        var prayReaction = reactionUpdated.Reactions
+            .FirstOrDefault(x => (x.Type as ReactionTypeEmoji)?.Emoji == "🙏");
+        if (prayReaction == null)
         {
             return;
         }
-        
 
         var postMessage = await dbContext.Set<TelegramPost>()
             .FirstOrDefaultAsync(x => x.ChatId == _chatId && x.MessageId == reactionUpdated.MessageId);
-
         if (postMessage == null)
         {
             return;
         }
 
-        var reactionHandled = await dbContext.Set<TelegramVote>()
-            .AnyAsync(x => x.TelegramPostId == postMessage.PostId && x.UserId == reactionUpdated.User.Id);
-        if (reactionHandled)
+        if (postMessage.ReactionCount <= prayReaction.TotalCount)
         {
             return;
         }
 
-        dbContext.Set<TelegramVote>().Add(new TelegramVote
-        {
-            TelegramPostId = postMessage.Id,
-            UserId = reactionUpdated.User.Id
-        });
+        var increment = prayReaction.TotalCount - postMessage.ReactionCount;
 
         await dbContext.SaveChangesAsync();
-        await postService.IncrementVotes(postMessage.PostId, VoteType.Standard);
+        await postService.IncrementVotes(postMessage.PostId, VoteType.Standard, increment);
     }
 }

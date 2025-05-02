@@ -14,11 +14,11 @@ public class TgUpdateHandler(ILogger<TgUpdateHandler> logger, IServiceScopeFacto
 {
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        if (update.Type == UpdateType.MessageReaction)
+        if (update.Type == UpdateType.MessageReactionCount)
         {
             using var scope = scopeFactory.CreateScope();
             var tgService = scope.ServiceProvider.GetRequiredService<TgReactionHandler>();
-            await tgService.HandleReactionUpdate(update.MessageReaction);
+            await tgService.HandleReactionUpdate(update.MessageReactionCount);
         }
     }
 

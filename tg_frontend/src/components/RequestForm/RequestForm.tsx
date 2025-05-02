@@ -1,48 +1,85 @@
-import {Input, Textarea, Snackbar} from "@telegram-apps/telegram-ui";
-import {mainButton} from "@telegram-apps/sdk-react";
-import React from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import { Input, Textarea, Snackbar } from "@telegram-apps/telegram-ui";
+import { mainButton } from "@telegram-apps/sdk-react";
 import RequestsService from "@/services/RequestsService";
 
+type Status = "default" | "error" | "focused";
 
-function RequestForm() {
-    const [author, setAuthor] = React.useState("");
-    const [text, setText] = React.useState("");
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+const RequestForm: React.FC = () => {
+    const [author, setAuthor] = useState<string>("");
+    const [text, setText] = useState<string>("");
+    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+    const [textStatus, setTextStatus] = useState<Status>("default");
+    const [authorStatus, setAuthorStatus] = useState<Status>("default");
 
-    // refs для свежих значений
-    const textRef = React.useRef(text);
-    const authorRef = React.useRef(author);
-    React.useEffect(() => {
+    const textRef = useRef<string>(text);
+    const authorRef = useRef<string>(author);
+
+    useEffect(() => {
         textRef.current = text;
-        authorRef.current = author;
-    }, [text, author]);
+    }, [text]);
 
-    // монтируем mainButton единожды
-    React.useEffect(() => {
+    useEffect(() => {
+        authorRef.current = author;
+    }, [author]);
+
+    useEffect(() => {
         if (!mainButton.isMounted()) {
             mainButton.mount();
-            mainButton.setParams({ text: "Отправить", isEnabled: true, isVisible: true });
+            mainButton.setParams({
+                text: "Отправить",
+                isEnabled: true,
+                isVisible: true,
+            });
             mainButton.onClick(async () => {
-                await RequestsService.submitRequest(textRef.current, authorRef.current);
-                setText("");
-                setAuthor("");
-                setSnackbarOpen(prev => !prev);
+                const isTextValid = textRef.current.trim() !== "";
+                const isAuthorValid = authorRef.current.trim() !== "";
+
+                setTextStatus(isTextValid ? "default" : "error");
+                setAuthorStatus(isAuthorValid ? "default" : "error");
+
+                if (!isTextValid || !isAuthorValid) {
+                    return;
+                }
+
+                try {
+                    await RequestsService.submitRequest(textRef.current, authorRef.current);
+                    setText("");
+                    setAuthor("");
+                    setSnackbarOpen(true);
+                } catch (error) {
+                    console.error("Ошибка при отправке:", error);
+                }
             });
         }
     }, []);
+
+    const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setText(value);
+        setTextStatus(value.trim() !== "" ? "focused" : "error");
+    };
+
+    const handleAuthorChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setAuthor(value);
+        setAuthorStatus(value.trim() !== "" ? "focused" : "error");
+    };
 
     return (
         <div>
             <Textarea
                 header="Нужда"
                 value={text}
-                onChange={e => setText(e.target.value)}
+                status={textStatus}
+                onChange={handleTextChange}
                 placeholder="Напишите здесь вашу нужду"
             />
             <Input
                 header="Ваше имя"
                 value={author}
-                onChange={e => setAuthor(e.target.value)}
+                status={authorStatus}
+                onChange={handleAuthorChange}
             />
             {snackbarOpen && (
                 <Snackbar
@@ -55,6 +92,6 @@ function RequestForm() {
             )}
         </div>
     );
-}
+};
 
-export default RequestForm
+export default RequestForm;

@@ -1,5 +1,5 @@
 import {Input, Textarea} from "@telegram-apps/telegram-ui";
-import {mainButton} from '@telegram-apps/sdk';
+import {mainButton} from "@telegram-apps/sdk-react";
 import React from "react";
 import RequestsService from "@/services/RequestsService";
 

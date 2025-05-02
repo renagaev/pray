@@ -1,13 +1,13 @@
 import {Input, Textarea} from "@telegram-apps/telegram-ui";
-import { mainButton } from '@telegram-apps/sdk';
-import React, {useEffect} from "react";
+import {mainButton} from '@telegram-apps/sdk';
+import React from "react";
 import RequestsService from "@/services/RequestsService";
 
 function RequestForm() {
     const [author, setAuthor] = React.useState("")
     const [text, setText] = React.useState("")
 
-    useEffect(() => {
+    if (!mainButton.isMounted()) {
         mainButton.mount()
         mainButton.setParams({
             text: "Отправить"
@@ -20,7 +20,7 @@ function RequestForm() {
             setText("")
             setAuthor("")
         })
-    }, [])
+    }
 
 
     return (

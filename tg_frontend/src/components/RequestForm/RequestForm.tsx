@@ -1,9 +1,27 @@
-import {Button, Input, Textarea} from "@telegram-apps/telegram-ui";
-import React from "react";
+import {Input, Textarea} from "@telegram-apps/telegram-ui";
+import { mainButton } from '@telegram-apps/sdk';
+import React, {useEffect} from "react";
+import RequestsService from "@/services/RequestsService";
 
 function RequestForm() {
     const [author, setAuthor] = React.useState("")
     const [text, setText] = React.useState("")
+
+    useEffect(() => {
+        mainButton.mount()
+        mainButton.setParams({
+            text: "Отправить"
+        })
+        mainButton.onClick(async () => {
+            await RequestsService.submitRequest(text, author)
+            mainButton.setParams({
+                text: "Отправлено"
+            })
+            setText("")
+            setAuthor("")
+        })
+    }, [])
+
 
     return (
         <div>
@@ -18,9 +36,7 @@ function RequestForm() {
                 value={author}
                 onChange={event => setAuthor(event.target.value)}
             ></Input>
-            <Button>Оправить</Button>
         </div>
-
     )
 }
 

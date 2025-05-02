@@ -20,7 +20,13 @@ public class Startup(IConfiguration configuration)
             {
                 options.Login = configuration["AdminAuth:Login"];
                 options.Password = configuration["AdminAuth:Password"];
+            })
+            .AddScheme<TgAuthOptions, TgAuthHandler>("tma", options =>
+            {
+                options.Token = configuration["Tg:Token"];
             });
+        
+        
         services.AddDbContext<AppDbContext>();
         services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(configuration["Tg:Token"]));
         services.AddScoped<IPublishHandler, VkPublisher>();

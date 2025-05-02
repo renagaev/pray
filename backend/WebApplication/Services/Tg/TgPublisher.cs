@@ -24,6 +24,4 @@ public class TgPublisher(ITelegramBotClient client, IConfiguration configuration
             MessageId = sentMessage.Id
         });
     }
-
-
 }

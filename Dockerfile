@@ -33,7 +33,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 as final
 WORKDIR /app
 COPY --from=backend app/publish .
 COPY --from=site_frontend app/dist wwwroot
-COPY --from=tg_frontend app/dist wwwroot/tg
+COPY --from=tg_frontend app/dist wwwroot/tg-app
 
 EXPOSE 80
 ENV ASPNETCORE_URLS=http://0.0.0.0:80

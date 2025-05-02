@@ -10,12 +10,15 @@ function RequestForm() {
     if (!mainButton.isMounted()) {
         mainButton.mount()
         mainButton.setParams({
-            text: "Отправить"
+            text: "Отправить",
+            isEnabled: true,
+            isVisible: true
         })
         mainButton.onClick(async () => {
             await RequestsService.submitRequest(text, author)
             mainButton.setParams({
-                text: "Отправлено"
+                text: "Отправлено",
+                isVisible: true
             })
             setText("")
             setAuthor("")

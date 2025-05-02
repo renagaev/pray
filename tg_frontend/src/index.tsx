@@ -1,6 +1,5 @@
 // Include Telegram UI styles first to allow our code override the package CSS.
 import '@telegram-apps/telegram-ui/dist/styles.css';
-import { setDebug } from '@telegram-apps/bridge';
 import ReactDOM from 'react-dom/client';
 import { StrictMode } from 'react';
 import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
@@ -17,7 +16,6 @@ import './mockEnv.ts';
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 try {
-  setDebug(true)
   const launchParams = retrieveLaunchParams();
   const { tgWebAppPlatform: platform } = launchParams;
   const debug = (launchParams.tgWebAppStartParam || '').includes('platformer_debug')

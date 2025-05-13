@@ -19,7 +19,7 @@ public class TgPostUpdateService(ITelegramBotClient botClient, AppDbContext dbCo
     public async Task MarkPostAsUnActual(int postId)
     {
         var post = await dbContext.Set<Post>()
-            .FirstAsync();
+            .FirstAsync(x=> x.Id == postId);
         var tgPosts = await dbContext.Set<TelegramPost>()
             .Where(x => x.PostId == postId)
             .ToListAsync();

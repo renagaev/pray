@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import React, {useState, useEffect, useRef, ChangeEvent } from "react";
 import { Input, Textarea, Snackbar } from "@telegram-apps/telegram-ui";
 import { mainButton } from "@telegram-apps/sdk-react";
 import RequestsService from "@/services/RequestsService";
@@ -54,7 +54,7 @@ const RequestForm: React.FC = () => {
         }
     }, []);
 
-    const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value;
         setText(value);
         setTextStatus(value.trim() !== "" ? undefined : "error");

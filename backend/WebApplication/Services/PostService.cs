@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -91,7 +92,8 @@ namespace WebApplication.Services
 
         public async Task<Post[]> GetForAdmin()
         {
-            return await _set.OrderByDescending(x => x.PublishDate).ToArrayAsync();
+            var yearAgo = DateTime.UtcNow.AddYears(-1);
+            return await _set.Where(x=> x.CreationDate > yearAgo).OrderByDescending(x => x.PublishDate).ToArrayAsync();
         }
     }
 }
